@@ -15,4 +15,15 @@ describe('ReadByLineTransform tests', function () {
                 done();
             });
     });
+
+    it('should push one line of data if one chunk passed', function () {
+        let linesRead = 0;
+        new MockStream(['line'])
+            .pipe(new ReadByLineTransform())
+            .on('data', data => linesRead++)
+            .on('end', () => {
+                assert.equal(linesRead, 1);
+                done();
+            });
+    });
 });
