@@ -1,5 +1,6 @@
 #VS Code stuff
 typings
+.vscode
 
 #Sample data folder
 sample-data
