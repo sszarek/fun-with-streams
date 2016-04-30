@@ -4,14 +4,14 @@ const assert = require('assert');
 const MockReadableStream = require('./MockReadableStream');
 const ReadByLineTransform = require('./../lib/ReadByLineTransform');
 
-const SMALL_CHUNKS = 4;
+const SMALL_CHUNKS = 5;
 
 describe('ReadByLineTransform tests', function () {
     it('should not push data when empty string passed', function (done) {
         let pushedLines = [];
         new MockReadableStream('', SMALL_CHUNKS, { encoding: 'utf8' })
             .pipe(new ReadByLineTransform())
-            .on('data', pushedLines.push)
+            .on('data', data => pushedLines.push(data))
             .on('end', () => {
                 assert.equal(pushedLines.length, 0);
                 done();
@@ -27,17 +27,17 @@ describe('ReadByLineTransform tests', function () {
             })
             .on('end', () => {
                 assert.equal(pushedLines.length, 1);
+                assert.equal(pushedLines[0], 'line');
                 done();
             });
     });
 
     it('should push two lines when string is not longer than chunk size and has line break', function (done) {
         let pushedLines = [];
-
         new MockReadableStream('li\nne', SMALL_CHUNKS, { encoding: 'utf8' })
             .pipe(new ReadByLineTransform())
-            .on('data', pushedLines.push)
-            .on('end', () => {
+            .on('data', data => pushedLines.push(data))
+            .on('end', (data) => {
                 assert.equal(pushedLines.length, 2);
                 done();
             });
