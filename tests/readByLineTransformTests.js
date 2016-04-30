@@ -48,6 +48,25 @@ describe('ReadByLineTransform tests', function () {
             done();
         });
     });
+    
+    it('should push 2 lines when string has 1 line breaks and its length excedds chunk size', function () {
+        runReadByLineTransformTest('line1line2\nline3', SMALL_CHUNKS, pushedLines => {
+            assert.equal(pushedLines.length, 2);
+            assert.equal(pushedLines[0], 'line1line2');
+            assert.equal(pushedLines[1], 'line3');
+            done();
+        });
+    });
+    
+    it('should push 3 lines when string has 2 line breaks between lines', function() {
+        runReadByLineTransformTest('line1\n\nline2', SMALL_CHUNKS, pushedLines => {
+            assert.equal(pushedLines.length, 2);
+            assert.equal(pushedLines[0], 'line1');
+            assert.equal(pushedLines[1], '');
+            assert.equal(pushedLines[2], 'line2');
+            done();
+        });
+    });
 });
 
 function runReadByLineTransformTest(input, chunkSize, callback) {
