@@ -14,7 +14,7 @@ describe('ReadByLineTransform tests', function () {
         });
     });
 
-    it('should push one line of data when string is not longer than chunk size and has no line breaks', function (done) {
+    it('should push 1 line of data when string has no line breaks', function (done) {
         runReadByLineTransformTest('line', SMALL_CHUNKS, pushedLines => {
             assert.equal(pushedLines.length, 1);
             assert.equal(pushedLines[0], 'line');
@@ -22,7 +22,7 @@ describe('ReadByLineTransform tests', function () {
         });
     });
 
-    it('should push two lines when string is not longer than chunk size and has line break', function (done) {
+    it('should push 2 lines when string has 1 line break', function (done) {
         runReadByLineTransformTest('li\nne', SMALL_CHUNKS, pushedLines => {
             assert.equal(pushedLines.length, 2);
             assert.equal(pushedLines[0], 'li');
@@ -31,12 +31,20 @@ describe('ReadByLineTransform tests', function () {
         });
     });
     
-    it('should push 3 lines when string is not longer that chunk and has 2 line breaks', function(done) {
+    it('should push 3 lines when string has 2 line breaks', function(done) {
         runReadByLineTransformTest('one\ntwo\nthree', SMALL_CHUNKS, pushedLines => {
             assert.equal(pushedLines.length, 3);
             assert.equal(pushedLines[0], 'one');
             assert.equal(pushedLines[1], 'two');
             assert.equal(pushedLines[2], 'three');
+            done();
+        });
+    });
+    
+    it('should push 1 line when string has no line breaks and its length excedds chunk size', function () {
+        runReadByLineTransformTest('line1line2line3', SMALL_CHUNKS, pushedLines => {
+            assert.equal(pushedLines.length, 1);
+            assert.equal(pushedLines[0], 'line1line2line3');
             done();
         });
     });
