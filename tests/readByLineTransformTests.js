@@ -30,6 +30,16 @@ describe('ReadByLineTransform tests', function () {
             done();
         });
     });
+    
+    it('should push 3 lines when string is not longer that chunk and has 2 line breaks', function(done) {
+        runReadByLineTransformTest('one\ntwo\nthree', SMALL_CHUNKS, pushedLines => {
+            assert.equal(pushedLines.length, 3);
+            assert.equal(pushedLines[0], 'one');
+            assert.equal(pushedLines[1], 'two');
+            assert.equal(pushedLines[2], 'three');
+            done();
+        });
+    });
 });
 
 function runReadByLineTransformTest(input, chunkSize, callback) {
