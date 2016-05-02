@@ -42,9 +42,9 @@ describe('ReadByLineTransform tests', function () {
     });
     
     it('should push 1 line when string has no line breaks and its length excedds chunk size', function (done) {
-        runReadByLineTransformTest('line1line2line3', SMALL_CHUNKS, pushedLines => {
+        runReadByLineTransformTest('line1line2', SMALL_CHUNKS, pushedLines => {
             assert.equal(pushedLines.length, 1);
-            assert.equal(pushedLines[0], 'line1line2line3');
+            assert.equal(pushedLines[0], 'line1line2');
             done();
         });
     });
@@ -60,7 +60,7 @@ describe('ReadByLineTransform tests', function () {
     
     it('should push 3 lines when string has 2 line breaks between lines', function(done) {
         runReadByLineTransformTest('line1\n\nline2', SMALL_CHUNKS, pushedLines => {
-            assert.equal(pushedLines.length, 2);
+            assert.equal(pushedLines.length, 3);
             assert.equal(pushedLines[0], 'line1');
             assert.equal(pushedLines[1], '');
             assert.equal(pushedLines[2], 'line2');
